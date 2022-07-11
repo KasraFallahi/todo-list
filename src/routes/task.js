@@ -3,12 +3,10 @@ import express from 'express';
 import Task from '../models/task.js';
 
 // express router
-const router = express.Router();
-
-// --task routes--
+const taskRouter = express.Router();
 
 // add task
-router.post('/tasks/add', async (req, res) => {
+taskRouter.post('/api/tasks/add', async (req, res) => {
 
     try {
 
@@ -25,5 +23,9 @@ router.post('/tasks/add', async (req, res) => {
 
 });
 
-export default router;
+// remove task
+// edit task
+// change task status
+
+export default taskRouter;
 
