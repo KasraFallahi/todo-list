@@ -54,5 +54,24 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
+// a static user method to check the credentials
+userSchema.statics.findByCredentials = async (username, password) => {
+
+    const user = await User.findOne({ username });
+
+    if (!user) throw new Error('User does not exist');
+
+    // check whether the password is correct or not
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+        return user;
+    } else {
+        throw new Error('Wrong credentials');
+    }
+
+}
+
 // export user model
-export default mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+export default User;
