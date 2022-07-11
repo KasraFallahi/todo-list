@@ -1,6 +1,5 @@
 // imports
 import express from 'express';
-import './data/mongodb.js';
 
 // init express
 const app = express();
