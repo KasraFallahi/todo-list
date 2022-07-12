@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+// virtual task list model
+userSchema.virtual('taskLists', {
+    ref: 'TaskList',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 // jwt token generator method for user
 userSchema.methods.authUser = async function () {
     const user = this;
@@ -73,5 +80,5 @@ userSchema.statics.findByCredentials = async (username, password) => {
 }
 
 // export user model
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema, 'User');
 export default User;

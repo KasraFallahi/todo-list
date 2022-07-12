@@ -11,6 +11,11 @@ const taskListSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    }
 });
 
 // virtual task model
@@ -21,4 +26,4 @@ taskListSchema.virtual('tasks', {
 });
 
 // export task list model
-export default mongoose.model('TaskList', taskListSchema);
+export default mongoose.model('TaskList', taskListSchema, 'TaskList');

@@ -13,7 +13,7 @@ const authMiddleware = async (req, res, next) => {
         const userId = jsonwebtoken.verify(token, process.env.JWT_SECRET);
 
         // get user from database and pass user data to request body
-        req.user = User.findOne({ _id: userId });
+        req.user = await User.findOne({ _id: userId, 'tokens.token': token });
         next();
 
     } catch (error) {
