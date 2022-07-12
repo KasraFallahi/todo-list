@@ -1,12 +1,13 @@
 // imports 
 import express from 'express';
 import Task from '../models/task.js';
+import authMiddleware from '../middleware/middleware.js';
 
 // express router
 const taskRouter = express.Router();
 
 // add task
-taskRouter.post('/api/tasks/add', async (req, res) => {
+taskRouter.post('/api/tasks/add', authMiddleware, async (req, res) => {
 
     try {
 
