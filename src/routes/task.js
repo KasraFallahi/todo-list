@@ -7,11 +7,14 @@ import authMiddleware from '../middleware/middleware.js';
 const taskRouter = express.Router();
 
 // add task
-taskRouter.post('/api/tasks/add', authMiddleware, async (req, res) => {
+taskRouter.post('/api/tasks/add/:parentId', authMiddleware, async (req, res) => {
 
     try {
 
-        const task = new Task(req.body);
+        const task = new Task({
+            ...req.body,
+            list: req.params.parentId
+        });
         await task.save();
         res.status(200).send({
             message: 'task saved succesfully'

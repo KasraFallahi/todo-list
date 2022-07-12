@@ -7,14 +7,15 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
-        type: String,
-        required: false
-    },
     status: { // true for done and false for undone
         type: Boolean,
         required: true,
         default: false
+    },
+    list: { // parent list of task
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'TaskList'
     }
 });
 
