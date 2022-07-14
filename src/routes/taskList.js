@@ -1,7 +1,7 @@
 // imports 
 import express from 'express';
 import TaskList from '../models/taskList.js';
-import authMiddleware from '../middleware/middleware.js';
+import { authMiddleware, checkTaskMiddleware } from '../middleware/middleware.js';
 import User from '../models/user.js';
 
 // express router
@@ -55,7 +55,30 @@ taskListRouter.get('/api/tasks', authMiddleware, async (req, res) => {
 
 });
 
-// remove task list
+// remove a task list and all of tasks in it
+taskListRouter.delete('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+
+    try {
+
+        // ** tasks are deleted in middleware function of model
+        // delete the task and return it
+        const taskList =
+            await TaskList.findOne({ _id: req.params.listId, owner: req.user._id });
+
+        const deletedList = await taskList.remove();
+        if (!deletedList) res.status(404).send({ message: 'Task list not found' });
+        res.status(200).send({
+            message: 'Task list deleted succesfully',
+            deletedList
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: error.message });
+    }
+
+});
+
 // edit task list
 
 export default taskListRouter;

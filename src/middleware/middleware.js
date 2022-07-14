@@ -1,6 +1,7 @@
 // imports
 import jsonwebtoken from 'jsonwebtoken';
 import User from '../models/user.js';
+import TaskList from '../models/taskList.js';
 
 // middleware function to check athentication
 const authMiddleware = async (req, res, next) => {
@@ -22,4 +23,27 @@ const authMiddleware = async (req, res, next) => {
     }
 }
 
-export default authMiddleware;
+// get tasklist to check if exists and belongs to that user
+const checkTaskMiddleware = async (req, res, next) => {
+    try {
+        // check if given id is valid
+        if (!req.params.listId.match(/^[0-9a-fA-F]{24}$/)) throw new Error('Task list does not exist');
+
+        const taskList = await TaskList.findOne({ _id: req.params.listId });
+        if (!taskList) throw new Error('Task list does not exist');
+
+        if (taskList.owner._id.toString() !== req.user._id.toString()) {
+            throw new Error('You are not allowed to get this list');
+        }
+
+        req.taskList = taskList;
+
+        next();
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: error.message });
+    }
+}
+
+export { authMiddleware, checkTaskMiddleware };

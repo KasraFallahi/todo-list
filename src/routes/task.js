@@ -2,27 +2,19 @@
 import express from 'express';
 import Task from '../models/task.js';
 import TaskList from '../models/taskList.js';
-import authMiddleware from '../middleware/middleware.js';
+import { authMiddleware, checkTaskMiddleware } from '../middleware/middleware.js';
 
 // express router
 const taskRouter = express.Router();
 
 // add task
-taskRouter.post('/api/tasks/:parentId', authMiddleware, async (req, res) => {
+taskRouter.post('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
 
     try {
 
-        // get tasklist to check if exists and belongs to that user
-        const taskList = await TaskList.findOne({ _id: req.params.parentId });
-        if (!taskList) throw new Error('Task parent does not exist');
-
-        if (taskList.owner._id.toString() !== req.user._id.toString()) {
-            throw new Error('You are not allowed to modify this list');
-        }
-
         const task = new Task({
             ...req.body,
-            list: req.params.parentId
+            list: req.params.listId
         });
         await task.save();
         res.status(200).send({
@@ -37,17 +29,11 @@ taskRouter.post('/api/tasks/:parentId', authMiddleware, async (req, res) => {
 });
 
 // get tasks of a list
-taskRouter.get('/api/tasks/:parentId', authMiddleware, async (req, res) => {
+taskRouter.get('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
 
     try {
 
-        // get tasklist to check if exists and belongs to that user
-        const taskList = await TaskList.findOne({ _id: req.params.parentId });
-        if (!taskList) throw new Error('Task list does not exist');
-
-        if (taskList.owner._id.toString() !== req.user._id.toString()) {
-            throw new Error('You are not allowed to get this list');
-        }
+        const taskList = req.taskList;
 
         // use the virtual data(tasks) of task list
         await taskList.populate('tasks');
@@ -60,7 +46,7 @@ taskRouter.get('/api/tasks/:parentId', authMiddleware, async (req, res) => {
         }));
 
     } catch (error) {
-        console.error(error.message);
+        console.error(error);
         res.status(400).send({ message: error.message });
     }
 
