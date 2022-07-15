@@ -66,7 +66,7 @@ taskListRouter.delete('/api/tasks/:listId', authMiddleware, checkTaskMiddleware,
             await TaskList.findOne({ _id: req.params.listId, owner: req.user._id });
 
         const deletedList = await taskList.remove();
-        if (!deletedList) res.status(404).send({ message: 'Task list not found' });
+        if (!deletedList) return res.status(404).send({ message: 'Task list not found' });
         res.status(200).send({
             message: 'Task list deleted succesfully',
             deletedList
@@ -80,6 +80,36 @@ taskListRouter.delete('/api/tasks/:listId', authMiddleware, checkTaskMiddleware,
 });
 
 // edit task list
+taskListRouter.patch('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+    const updates = Object.keys(req.body);
+    const isValidOperation = updates.every((update) => ['title', 'description'].includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send({ message: 'Invalid updates' })
+    }
+
+    try {
+        const taskList = await TaskList.findOne({ _id: req.params.listId, owner: req.user._id })
+
+        if (!taskList) {
+            return res.status(404).send({ message: 'Task list not found' });
+        }
+
+        updates.forEach((update) => taskList[update] = req.body[update]);
+        await taskList.save();
+        res.status(200).send({
+            message: 'Task list edited succesfully',
+            list: {
+                _id: taskList._id,
+                title: taskList.title,
+                description: taskList.description
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: error.message });
+    }
+});
 
 export default taskListRouter;
 
