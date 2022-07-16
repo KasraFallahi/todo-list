@@ -1,20 +1,21 @@
 // imports 
 import express from 'express';
 import Task from '../models/task.js';
-import TaskList from '../models/taskList.js';
-import { authMiddleware, checkTaskMiddleware } from '../middleware/middleware.js';
+import { authMiddleware, checkTaskListMiddleware, checkTaskMiddleware }
+    from '../middleware/middleware.js';
 
 // express router
 const taskRouter = express.Router();
 
 // add task
-taskRouter.post('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+taskRouter.post('/api/tasks/:listId', authMiddleware, checkTaskListMiddleware, async (req, res) => {
 
     try {
 
         const task = new Task({
             ...req.body,
-            list: req.params.listId
+            list: req.params.listId,
+            owner: req.user._id
         });
         await task.save();
         res.status(200).send({
@@ -29,7 +30,7 @@ taskRouter.post('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async
 });
 
 // get tasks of a list
-taskRouter.get('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+taskRouter.get('/api/tasks/:listId', authMiddleware, checkTaskListMiddleware, async (req, res) => {
 
     try {
 
@@ -50,6 +51,38 @@ taskRouter.get('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async 
         res.status(400).send({ message: error.message });
     }
 
+});
+
+// change task status
+taskRouter.patch('/api/tasks/status/:taskId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+    const updates = Object.keys(req.body);
+    const isValidOperation = updates.every((update) => ['status'].includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send({ message: 'Invalid updates' })
+    }
+
+    try {
+        const task = await Task.findOne({ _id: req.params.taskId, owner: req.user._id });
+
+        if (!task) {
+            return res.status(404).send({ message: 'Task not found' });
+        }
+
+        task.status = req.body.status
+        await task.save();
+        res.status(200).send({
+            message: 'Task status change succesfully',
+            task: {
+                _id: task._id,
+                title: task.title,
+                status: task.status
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: error.message });
+    }
 });
 
 // remove task

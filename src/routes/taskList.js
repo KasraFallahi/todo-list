@@ -1,7 +1,7 @@
 // imports 
 import express from 'express';
 import TaskList from '../models/taskList.js';
-import { authMiddleware, checkTaskMiddleware } from '../middleware/middleware.js';
+import { authMiddleware, checkTaskListMiddleware } from '../middleware/middleware.js';
 import User from '../models/user.js';
 
 // express router
@@ -56,7 +56,7 @@ taskListRouter.get('/api/tasks', authMiddleware, async (req, res) => {
 });
 
 // remove a task list and all of tasks in it
-taskListRouter.delete('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+taskListRouter.delete('/api/tasks/:listId', authMiddleware, checkTaskListMiddleware, async (req, res) => {
 
     try {
 
@@ -80,7 +80,7 @@ taskListRouter.delete('/api/tasks/:listId', authMiddleware, checkTaskMiddleware,
 });
 
 // edit task list
-taskListRouter.patch('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+taskListRouter.patch('/api/tasks/:listId', authMiddleware, checkTaskListMiddleware, async (req, res) => {
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every((update) => ['title', 'description'].includes(update));
 
@@ -89,7 +89,7 @@ taskListRouter.patch('/api/tasks/:listId', authMiddleware, checkTaskMiddleware, 
     }
 
     try {
-        const taskList = await TaskList.findOne({ _id: req.params.listId, owner: req.user._id })
+        const taskList = await TaskList.findOne({ _id: req.params.listId, owner: req.user._id });
 
         if (!taskList) {
             return res.status(404).send({ message: 'Task list not found' });
