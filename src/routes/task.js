@@ -85,9 +85,30 @@ taskRouter.patch('/api/tasks/status/:taskId', authMiddleware, checkTaskMiddlewar
     }
 });
 
-// remove task
+// remove a task 
+taskRouter.delete('/api/tasks/task/:taskId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+
+    try {
+
+        // delete the task and return it
+        const task =
+            await Task.findOne({ _id: req.params.taskId, owner: req.user._id });
+
+        const deletedTask = await task.remove();
+        if (!deletedTask) return res.status(404).send({ message: 'Task not found' });
+        res.status(200).send({
+            message: 'Task deleted succesfully',
+            deletedTask: deletedTask
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: error.message });
+    }
+
+});
+
 // edit task
-// change task status
 
 export default taskRouter;
 
