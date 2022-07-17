@@ -106,7 +106,8 @@ taskRouter.patch('/api/tasks/status/:taskId', authMiddleware, checkTaskMiddlewar
             task: {
                 _id: task._id,
                 title: task.title,
-                status: task.status
+                status: task.status,
+                position: task.position
             }
         });
     } catch (error) {
@@ -156,7 +157,75 @@ taskRouter.delete('/api/tasks/task/:taskId', authMiddleware, checkTaskMiddleware
 
 });
 
-// edit task
+// edit task title and position
+taskRouter.patch('/api/tasks/task/:taskId', authMiddleware, checkTaskMiddleware, async (req, res) => {
+    const updates = Object.keys(req.body);
+    const isValidOperation = updates.every((update) => ['title', 'position'].includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send({ message: 'Invalid updates' })
+    }
+
+    try {
+        const task = await Task.findOne({ _id: req.params.taskId, owner: req.user._id });
+
+        if (!task) {
+            return res.status(404).send({ message: 'Task not found' });
+        }
+
+        // edit title
+        if (req.body.title) task.title = req.body.title;
+
+        // TODO convert this code to utility function
+        // arrange task position
+
+        // get all of the tasks in the same list
+        const taskList = await Task.find({ list: task.list, owner: task.owner });
+
+        // sort task list based on positions
+        taskList.sort((a, b) => a.position - b.position);
+
+        // check if user has sent the position or not
+        if (req.body.position || req.body.position !== task.position) {
+            if (req.body.position > task.position) { // unshift tasks before
+                if (req.body.position >= taskList.length) {
+                    for (let i = task.position; i < taskList.length; i++) {
+                        taskList[i].position--;
+                        await taskList[i].save();
+                    }
+                    task.position = taskList.length;
+                } else {
+                    for (let i = task.position; i < req.body.position; i++) {
+                        taskList[i].position--;
+                        await taskList[i].save();
+                    }
+
+                    task.position = req.body.position;
+                }
+            } else { // shift tasks after
+                for (let i = req.body.position - 1; i < task.position; i++) {
+                    taskList[i].position++;
+                    await taskList[i].save();
+                }
+                task.position = req.body.position;
+            }
+        }
+
+        await task.save();
+        res.status(200).send({
+            message: 'Task edited change succesfully',
+            task: {
+                _id: task._id,
+                title: task.title,
+                status: task.status,
+                position: task.position
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: error.message });
+    }
+});
 
 export default taskRouter;
 
