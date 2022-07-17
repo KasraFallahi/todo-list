@@ -1,0 +1,417 @@
+{
+	"info": {
+		"_postman_id": "979b273b-c182-49e8-83a6-1c217feb2adf",
+		"name": "TODO List API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15328143"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"kasraf\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/users/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"kasraf\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Task List",
+					"item": [
+						{
+							"name": "New Task List",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc5NzkzMTZ9.q5Tu1IGq-6AoJ-fOx9GSDtANugP8nnu2kTZ-ZsrW-1E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\" : \"task2\",\n    \"description\" : \"task1 description\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/tasks",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Task Lists",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc2MzAxNDl9.Glz2FZirO7s3eOO-7xWPWMtynP6xhLeFyoJOGPUuMSA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/tasks",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task List",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc2MzAxNDl9.Glz2FZirO7s3eOO-7xWPWMtynP6xhLeFyoJOGPUuMSA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/tasks/62ce7a2bab030f2ef8f0cd4f",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"62ce7a2bab030f2ef8f0cd4f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Task List",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc2MzAxNDl9.Glz2FZirO7s3eOO-7xWPWMtynP6xhLeFyoJOGPUuMSA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\":\"edited1\",\n    \"title\":\"title1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/tasks/62ce7a2bab030f2ef8f0cd4f",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"62ce7a2bab030f2ef8f0cd4f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add List of Lists",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc5NzkzMTZ9.q5Tu1IGq-6AoJ-fOx9GSDtANugP8nnu2kTZ-ZsrW-1E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"title\" : \"list 1\",\n        \"description\" : \"description\"\n    },\n    \n    {\n        \"title\" : \"list 2\",\n        \"description\" : \"description\"\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/tasks/add-list",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"add-list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "individual Task",
+					"item": [
+						{
+							"name": "Change Task Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc2MzAxNDl9.Glz2FZirO7s3eOO-7xWPWMtynP6xhLeFyoJOGPUuMSA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/tasks/status/62d2c25b1e432bf38481effa",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"status",
+										"62d2c25b1e432bf38481effa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Task",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc5NzkzMTZ9.q5Tu1IGq-6AoJ-fOx9GSDtANugP8nnu2kTZ-ZsrW-1E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"task 22\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/tasks/62d2c11cb3c4d4197159288d",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"62d2c11cb3c4d4197159288d"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc5NzkzMTZ9.q5Tu1IGq-6AoJ-fOx9GSDtANugP8nnu2kTZ-ZsrW-1E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/tasks/task/62d3b9fe6bba1bd7d85ffdf3",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"task",
+										"62d3b9fe6bba1bd7d85ffdf3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Tasks of a List",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmNkNmRjNWM4YTg0YTU3NTljNmM2NWMiLCJpYXQiOjE2NTc2MzAxNDl9.Glz2FZirO7s3eOO-7xWPWMtynP6xhLeFyoJOGPUuMSA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/tasks/62ce7a2bab030f2ef8f0cd4",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tasks",
+										"62ce7a2bab030f2ef8f0cd4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Task",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
