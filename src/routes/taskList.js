@@ -30,6 +30,29 @@ taskListRouter.post('/api/tasks', authMiddleware, async (req, res) => {
 
 });
 
+// add list of lists
+taskListRouter.post('/api/lists', authMiddleware, async (req, res) => {
+
+    try {
+
+        req.body.forEach(async (list) => {
+            const taskList = new TaskList({
+                ...list,
+                owner: req.user._id
+            });
+
+            await taskList.save();
+        });
+
+        res.status(200).send({ message: 'List of lists saved succesfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(400).send({ message: error.message });
+    }
+
+});
+
 // get all task lists of a user
 taskListRouter.get('/api/tasks', authMiddleware, async (req, res) => {
 
