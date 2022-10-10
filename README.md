@@ -1,15 +1,33 @@
 # TODO-List REST API
 
+## Installation
+
+Required:
+- Node.js
+- MongoDB
+
+Setup:
+>Install Node Modules
+``` javascript
+npm install
+```
+
+>Start the server
+``` javascript
+npm run start
+```
+## Live Demo
+https://todo-list-e7ej.onrender.com/api/users/register
 
 
-# Account
+## Account
 
 | Route | Method	 | POST body	 | Description	 |
 | --- | --- | --- | --- |
 | /api/users/register | `POST` | {"username":"kasra", "password":"123456"} | Register an account. |
 | /api/users/login | `GET` | {"username":"kasra", "password":"123456"} | Login to an account. |
 
-# Task List
+## Task List
 
 | Route | Method	 | POST body	 | Description	 |
 | --- | --- | --- | --- |
@@ -19,7 +37,7 @@
 | /api/tasks/:id | `PATCH` | {"description":"edited1","title":"title1"} | Edit tasks list. |
 | /api/tasks/add-list | `POST` | [{"title" : "list 2","description" : "description"}] | Add list of lists. |
 
-# Individual Task
+## Individual Task
 
 | Route | Method	 | POST body	 | Description	 |
 | --- | --- | --- | --- |
