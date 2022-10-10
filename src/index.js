@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use(morgan('[:date[web]] :method :url :status - :response-time ms'));
+app.use(morgan('combined'));
 
 // assign routers
 app.use(taskRouter);
